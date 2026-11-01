@@ -1,0 +1,65 @@
+@import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-quartz.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #080C14;
+  --foreground: #F8FAFC;
+  --card: #0F172A;
+  --card-border: #1E293B;
+  --accent-cyan: #06B6D4;
+  --accent-blue: #0070BA;
+  --status-emerald: #10B981;
+  --status-amber: #F59E0B;
+  --status-rose: #EF4444;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom AG Grid Quartz Dark Overrides */
+.ag-theme-quartz-dark {
+  --ag-background-color: #0c1220;
+  --ag-header-background-color: #0f172a;
+  --ag-header-foreground-color: #94a3b8;
+  --ag-odd-row-background-color: #090e18;
+  --ag-border-color: #1e293b;
+  --ag-row-border-color: #1a2333;
+  --ag-font-size: 13px;
+  --ag-font-family: inherit;
+  --ag-cell-horizontal-padding: 14px;
+}
+
+.ag-theme-quartz-dark .ag-header-cell-label {
+  font-family: monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* Custom Terminal Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080c14;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
