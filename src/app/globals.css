@@ -6,60 +6,100 @@
 @tailwind utilities;
 
 :root {
-  --background: #080C14;
-  --foreground: #F8FAFC;
-  --card: #0F172A;
-  --card-border: #1E293B;
-  --accent-cyan: #06B6D4;
-  --accent-blue: #0070BA;
-  --status-emerald: #10B981;
-  --status-amber: #F59E0B;
-  --status-rose: #EF4444;
+  --background: #06090e;
+  --foreground: #f8fafc;
+  --card: #0c121d;
+  --card-border: #1a2638;
+  --accent-cyan: #06b6d4;
+  --accent-blue: #0070ba;
+  --status-emerald: #10b981;
+  --status-amber: #f59e0b;
+  --status-rose: #ef4444;
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--background);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(0, 112, 186, 0.06) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.03) 0px, transparent 50%);
+  background-attachment: fixed;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
 }
 
-/* Custom AG Grid Quartz Dark Overrides */
+/* Subtle Grid Matrix Background */
+.bg-grid-pattern {
+  background-size: 28px 28px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* AG Grid Quartz Dark Enterprise Overrides */
 .ag-theme-quartz-dark {
-  --ag-background-color: #0c1220;
-  --ag-header-background-color: #0f172a;
+  --ag-background-color: #080d16;
+  --ag-header-background-color: #0c1422;
   --ag-header-foreground-color: #94a3b8;
-  --ag-odd-row-background-color: #090e18;
-  --ag-border-color: #1e293b;
-  --ag-row-border-color: #1a2333;
-  --ag-font-size: 13px;
-  --ag-font-family: inherit;
+  --ag-odd-row-background-color: #060a12;
+  --ag-border-color: #1a2638;
+  --ag-row-border-color: #121c2b;
+  --ag-font-size: 12.5px;
+  --ag-font-family: var(--font-mono), monospace;
   --ag-cell-horizontal-padding: 14px;
+  --ag-selected-row-background-color: rgba(6, 182, 212, 0.08);
+  --ag-row-hover-color: rgba(255, 255, 255, 0.03);
 }
 
 .ag-theme-quartz-dark .ag-header-cell-label {
-  font-family: monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   font-weight: 600;
+  color: #64748b;
 }
 
-/* Custom Terminal Scrollbar */
+.ag-theme-quartz-dark .ag-root-wrapper {
+  border: 1px solid #1a2638;
+  border-radius: 10px;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #080c14;
+  background: #06090e;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
+}
+
+/* Pulse Glow & Shimmer */
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 3s infinite ease-in-out;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.animate-scanline {
+  animation: scanline 8s linear infinite;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { Header } from '@/components/Header';
 import { AgentSimulator } from '@/components/AgentSimulator';
@@ -15,9 +15,9 @@ const AuditLedger = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-8 flex items-center justify-center text-slate-400 font-mono text-xs">
-        <span className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mr-2" />
-        Mounting AG Grid Audit Terminal...
+      <div className="bg-[#0b111c] border border-slate-800 rounded-2xl p-8 flex items-center justify-center text-slate-400 font-mono text-xs shadow-xl">
+        <span className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mr-2.5" />
+        Mounting AG Grid Enterprise Audit Terminal...
       </div>
     ),
   }
@@ -31,7 +31,15 @@ export default function Home() {
   const [ledgerEntries, setLedgerEntries] = useState<AuditLedgerEntry[]>(INITIAL_LEDGER_SEED);
   const [currentSpent, setCurrentSpent] = useState<number>(42.5);
 
-  const handleExecute = async () => {
+  const blockedCount = useMemo(() => {
+    return ledgerEntries.filter((e) => e.status === 'REJECTED').length;
+  }, [ledgerEntries]);
+
+  const avgLatencyMs = useMemo(() => {
+    return evaluation?.latencyMs || 2;
+  }, [evaluation]);
+
+  const handleExecute = useCallback(async () => {
     setIsEvaluating(true);
     setEvaluation(null);
 
@@ -61,7 +69,12 @@ export default function Home() {
         amount: request.amount,
         currency: request.currency,
         riskScore: data.riskScore,
-        status: data.decision === 'APPROVED_AUTO' ? 'CAPTURED' : data.decision === 'FLAGGED_REVIEW' ? 'PENDING_APPROVAL' : 'REJECTED',
+        status:
+          data.decision === 'APPROVED_AUTO'
+            ? 'CAPTURED'
+            : data.decision === 'FLAGGED_REVIEW'
+            ? 'PENDING_APPROVAL'
+            : 'REJECTED',
         decision: data.decision,
         paypalOrderId: data.paypalOrderId || 'N/A',
         reasoningSummary: data.violations.length > 0 ? data.violations[0] : 'Autonomous clean pass',
@@ -78,7 +91,20 @@ export default function Home() {
     } finally {
       setIsEvaluating(false);
     }
-  };
+  }, [request, policy]);
+
+  // Keyboard shortcut Ctrl+Enter to trigger execution
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        if (!isEvaluating) {
+          handleExecute();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleExecute, isEvaluating]);
 
   const handleApprovePending = async (orderId: string) => {
     try {
@@ -133,11 +159,13 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080C14] text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#06090e] text-slate-100 flex flex-col font-sans bg-grid-pattern">
       <Header
         currentSpent={currentSpent}
         sessionCap={policy.sessionBudgetCap}
         totalOrders={ledgerEntries.length}
+        blockedCount={blockedCount}
+        avgLatencyMs={avgLatencyMs}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 flex flex-col gap-6 w-full">
@@ -171,8 +199,12 @@ export default function Home() {
 
       </main>
 
-      <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs font-mono text-slate-500">
-        PayAgent Sentinel — Built for PayPal AI Hackathon (Build What’s Next with PayPal & AI)
+      <footer className="border-t border-slate-900/80 bg-[#04070c] py-4 text-center text-xs font-mono text-slate-500 flex flex-wrap items-center justify-center gap-4 px-4">
+        <span>PayAgent Sentinel — Autonomous Agentic Commerce Firewall & Real-Time Audit Ledger</span>
+        <span className="text-slate-800">•</span>
+        <span>Built for PayPal AI Hackathon: Build What’s Next with PayPal & AI</span>
+        <span className="text-slate-800">•</span>
+        <span>MIT License © 2026 Gieez</span>
       </footer>
     </div>
   );
