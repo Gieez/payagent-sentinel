@@ -1,5 +1,7 @@
 # PayAgent Sentinel: Autonomous Agentic Commerce Firewall & PayPal Audit Ledger
 
+![PayAgent Sentinel Thumbnail](https://payagent-sentinel.vercel.app/thumbnail.png)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Next.js 15](https://img.shields.io/badge/Next.js-15.1-black)](https://nextjs.org)
 [![PayPal](https://img.shields.io/badge/PayPal-Sandbox%20v2-0070BA)](https://developer.paypal.com)
